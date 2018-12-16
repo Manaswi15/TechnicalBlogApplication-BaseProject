@@ -1,12 +1,23 @@
 package technicalblog.model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "posts")
 public class Post {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "body")
     private String body;
+
+    @Column(name = "date")
     private Date date;
 
     public String getTitle() {
@@ -33,4 +44,12 @@ public class Post {
         this.date = date;
     }
 
+    public void setId(Integer postId) {
+        this.id=postId;
+    }
+
+    public Integer getId()
+    {
+        return this.id;
+    }
 }

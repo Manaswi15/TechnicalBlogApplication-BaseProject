@@ -1,48 +1,45 @@
 package technicalblog.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import technicalblog.model.Post;
+import technicalblog.repository.PostRepository;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 
 @Service
 public class PostService {
 
-    public ArrayList<Post> getAllPosts() {
-        ArrayList<Post> posts = new ArrayList<>();
+    @Autowired
+    private PostRepository repository;
 
-        Post post1 = new Post();
-        post1.setTitle("Post 1");
-        post1.setBody("Post Body 1");
-        post1.setDate(new Date());
-
-        Post post2 = new Post();
-        post2.setTitle("Post 2");
-        post2.setBody("Post Body 2");
-        post2.setDate(new Date());
-
-        Post post3 = new Post();
-        post3.setTitle("Post 3");
-        post3.setBody("Post Body 3");
-        post3.setDate(new Date());
-
-        posts.add(post1);
-        posts.add(post2);
-        posts.add(post3);
-
-        return posts;
+    public List<Post> getAllPosts() {
+        return repository.getAllPosts();
     }
 
-    public ArrayList<Post> getOnePost() {
-        ArrayList<Post> posts = new ArrayList<>();
+    public Post getOnePost() {
+        return repository.getLatestPost();
 
-        Post post1 = new Post();
-        post1.setTitle("This is your Post");
-        post1.setBody("This is your Post. It has some valid content");
-        post1.setDate(new Date());
-        posts.add(post1);
+    }
 
-        return posts;
+    public Post getPost(Integer postId) {
+        return repository.getPost(postId);
+    }
 
+    public void createPost (Post newPost){
+        newPost.setDate(new Date());
+        repository.createPost(newPost);
+        System.out.println("Creating new post:"+newPost);
+    }
+
+    public void updatePost(Post updatedPost) {
+        updatedPost.setDate(new Date());
+        repository.updatePost(updatedPost);
+    }
+
+    public void deletePost(Integer postId) {
+        repository.deletePost(postId);
     }
 }

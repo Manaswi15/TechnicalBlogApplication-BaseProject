@@ -5,18 +5,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import technicalblog.model.Post;
 import technicalblog.model.User;
 import technicalblog.service.PostService;
+import technicalblog.service.UserService;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class UserController {
 
     @Autowired
     private PostService postservice = new PostService();
+
+    @Autowired
+    private UserService userService = new UserService();
 
     @RequestMapping("users/login")
     public String login()
@@ -33,14 +36,29 @@ public class UserController {
     @RequestMapping(value="users/login", method= RequestMethod.POST)
     public String userLogin(User user)
     {
-        return "redirect:/posts";
+        if(userService.login(user)) {
+            return "redirect:/posts";
+        }
+        else {
+            return "users/login";
+        }
     }
+
 
     @RequestMapping(value="users/logout", method= RequestMethod.POST)
     public String userLogin(Model model)
     {
-        ArrayList<Post> posts = postservice.getAllPosts();
+        List<Post> posts = postservice.getAllPosts();
+        //ArrayList<Post> posts = postservice.getAllPosts();
         model.addAttribute("posts", posts);
         return "index";
+    }
+
+
+    @RequestMapping(value="users/registration",method=RequestMethod.POST)
+    public String registerUser(User user)
+    {
+        return "users/login";
+
     }
 }
